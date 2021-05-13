@@ -129,7 +129,7 @@ white='\e[0;00m\]'
 #PS1="\e[34m\A\] \e[32m\u\] \e[34m\w\] \e[00m\]"
 #PS1="$blue[\A] $green\u$ltblue [\$(count-files)] \w $white \n"
 #PS1='\e[34m\]\A \u \w\a '
-PS1='\[\e[0;34m\][\A] \[\e[32m\]\u \[\e[0;36m\][$(count-files)] \w\[\e[0m\] '
+PS1='\[\e[0;34m\][\A] \[\e[32m\]\u \[\e[0;36m\][$(ls -1A | wc -l)] \w\[\e[0m\] '
 
 
 #schedule
