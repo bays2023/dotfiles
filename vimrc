@@ -8,7 +8,7 @@ nnoremap <leader><space> :nohlsearch<CR>
 set spell spelllang=en_us
 set nosm
 set incsearch
-"set nowrap
+set ignorecase
 set pastetoggle=<F10>
 
 ab vect std::vector<int>
