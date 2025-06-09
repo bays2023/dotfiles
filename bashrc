@@ -56,7 +56,22 @@ if [ -n "$force_color_prompt" ]; then
     fi
 fi
 
+if [ "$color_prompt" = yes ]; then
+    #PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '
+    PS1='\[\033[01;31m\][$(date +%m)-$(date +%d) $(date +%H):$(date +%M)] \[\033[34m\]\u \[\033[36m\]($(ls -1A | wc -l)) \[\033[32m\]\w \[\033[00m\]'
+else
+    PS1='${debian_chroot:+($debian_chroot)}\u@\h:\w\$ '
+fi
+unset color_prompt force_color_prompt
+
 # If this is an xterm set the title to user@host:dir
+case "$TERM" in
+xterm*|rxvt*)
+    PS1="\[\e]0;${debian_chroot:+($debian_chroot)}\u@\h: \w\a\]$PS1"
+    ;;
+*)
+    ;;
+esac
 
 # enable color support of ls and also add handy aliases
 if [ -x /usr/bin/dircolors ]; then
@@ -92,44 +107,31 @@ fi
 # sources /etc/bash.bashrc).
 if ! shopt -oq posix; then
   if [ -f /usr/share/bash-completion/bash_completion ]; then
-	. /usr/share/bash-completion/bash_completion
+    . /usr/share/bash-completion/bash_completion
   elif [ -f /etc/bash_completion ]; then
-	. /etc/bash_completion
+    . /etc/bash_completion
   fi
 fi
 
-export PATH="/home/josh/bin/:$PATH"
-#export CEDEV=/home/josh/Downloads/CEdev
-#export PATH=$CEDEV/bin:$PATH
-
-
-alias c="clear" 
-alias l="ls -A"
-alias m="mkdir -p"
-alias p="pwd"
-alias q="exit"
-alias v="vim"
-
-alias dc="cd"
-alias ll="ls -lA"
-alias maek="make"
-#alias rem="rm -rf"
-alias vs="codium"
+export PAGER="/bin/sh -c \"unset PAGER;col -b -x | \
+    vim -R -c 'set nu!' -c 'set spell!' -c 'set ft=man nomod nolist' -c 'map q :q<CR>' \
+    -c 'map <SPACE> <C-D>' -c 'map b <C-U>' \
+    -c 'nmap K :Man <C-R>=expand(\\\"<cword>\\\")<CR><CR>' -\""
 
 alias ..="cd .."
+alias c="clear"
+alias dc="cd"
+alias grep="grep --color=auto"
+alias l="ls -A"
+alias ll="ls -lA"
+alias m="mkdir -p"
+alias mdkir="mkdir"
+alias rem="rm -rI"
+alias q="exit"
+alias zathura="zathura --fork"
+alias man="man --nh"
 
-alias xterm="xterm -font -*-fixed-medium-r-*-*-18-*-*-*-*-*-iso8859-* -geometry 70x24"
+set -o vi
+PATH=:/home/josh/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/home/josh/.local/bin:/home/josh/.cargo/bin
 
-blue='\e[0;34m\]'
-green='\e[0;32m\]'
-ltblue='\e[0;36m\]'
-white='\e[0;00m\]'
-
-#export PS1="\e[34m\A\] \e[32m\u\] \e[34m\w\] \e[00m\]"
-#PS1="\e[34m\A\] \e[32m\u\] \e[34m\w\] \e[00m\]"
-#PS1="$blue[\A] $green\u$ltblue [\$(count-files)] \w $white \n"
-#PS1='\e[34m\]\A \u \w\a '
-PS1='\[\e[0;34m\][\A] \[\e[32m\]\u \[\e[0;36m\][$(ls -1A | wc -l)] \w\[\e[0m\] '
-
-
-#schedule
+PS1='\[\033[01;31m\][$(date +%m)-$(date +%d) $(date +%H):$(date +%M)] \[\033[34m\]\u \[\033[36m\]($(ls -1A | wc -l)) \[\033[32m\]\w \[\033[00m\]'
